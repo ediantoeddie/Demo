@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.photos.Photo;
+import com.flickr4java.flickr.photos.PhotoList;
 import com.test.demo.entity.Demo;
 import com.test.demo.repository.DemoRepository;
 
@@ -29,6 +32,10 @@ public class DemoService {
 
 	public String delete(int id) {
 		return demoRepository.delete(id);
+	}
+
+	public PhotoList<Photo> search() throws FlickrException {
+		return demoRepository.search();
 	}
 
 }
