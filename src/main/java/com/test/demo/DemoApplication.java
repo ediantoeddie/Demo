@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -31,7 +32,7 @@ import com.test.demo.repository.DemoRepository;
 
 @SpringBootApplication
 @RestController
-public class DemoApplication implements CommandLineRunner {
+public class DemoApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
 	@Value("${greet}")
 	private String greet;
