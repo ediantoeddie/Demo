@@ -43,38 +43,38 @@ public class DemoApplication implements CommandLineRunner {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@RequestMapping(value = "/getPhotos/{search}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public ResponseEntity<List<PhotoSearchResult>> getPhotos(@PathVariable String search, HttpSession session) {
-		SearchParameters searchParameters = new SearchParameters();
-		searchParameters.setText(search);
-		String apiKey = "f045b28fca18e8c6c82eb9832f007238";
-		String sharedSecret = "6f97aff6a5034de1";
-		Flickr f = new Flickr(apiKey, sharedSecret, new REST());
-		List<PhotoSearchResult> psr = new ArrayList<PhotoSearchResult>();
-		PhotoList<Photo> list = null;
-		try {
-			list = f.getPhotosInterface().search(searchParameters, 10, 1);
-		} catch (FlickrException e) {
-			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.BAD_REQUEST);
-		}
-		
-		if (CollectionUtils.isEmpty(list)) {
-			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.NO_CONTENT);
-		}
-		
-		for (Photo photo : list) {
-			PhotoSearchResult p = new PhotoSearchResult();
-			p.setDescription(photo.getDescription());
-			p.setTitle(photo.getTitle());
-			p.setSmallUrl(photo.getSmallUrl());
-			p.setLargeUrl(photo.getLargeUrl());
-			psr.add(p);
-		}
-		
-//		saveSearchHistoryList(session, search);
-		
-		return new ResponseEntity<List<PhotoSearchResult>>(psr, HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/getPhotos/{search}", method = RequestMethod.GET, headers = "Accept=application/json")
+//	public ResponseEntity<List<PhotoSearchResult>> getPhotos(@PathVariable String search, HttpSession session) {
+//		SearchParameters searchParameters = new SearchParameters();
+//		searchParameters.setText(search);
+//		String apiKey = "f045b28fca18e8c6c82eb9832f007238";
+//		String sharedSecret = "6f97aff6a5034de1";
+//		Flickr f = new Flickr(apiKey, sharedSecret, new REST());
+//		List<PhotoSearchResult> psr = new ArrayList<PhotoSearchResult>();
+//		PhotoList<Photo> list = null;
+//		try {
+//			list = f.getPhotosInterface().search(searchParameters, 10, 1);
+//		} catch (FlickrException e) {
+//			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.BAD_REQUEST);
+//		}
+//		
+//		if (CollectionUtils.isEmpty(list)) {
+//			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.NO_CONTENT);
+//		}
+//		
+//		for (Photo photo : list) {
+//			PhotoSearchResult p = new PhotoSearchResult();
+//			p.setDescription(photo.getDescription());
+//			p.setTitle(photo.getTitle());
+//			p.setSmallUrl(photo.getSmallUrl());
+//			p.setLargeUrl(photo.getLargeUrl());
+//			psr.add(p);
+//		}
+//		
+////		saveSearchHistoryList(session, search);
+//		
+//		return new ResponseEntity<List<PhotoSearchResult>>(psr, HttpStatus.OK);
+//	}
 	
 	@Override
 	public void run(String... args) throws Exception {

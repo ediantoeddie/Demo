@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.util.CollectionUtils;
+ 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
@@ -14,6 +17,7 @@ import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photos.SearchParameters;
 import com.test.demo.entity.Demo;
+import com.test.demo.entity.PhotoSearchResult;
 
 @Repository
 public class DemoRepository {
@@ -47,31 +51,36 @@ public class DemoRepository {
 		return "Deleted";				
 	}
 	
-	public PhotoList<Photo> search() throws FlickrException {
-		Flickr flickr = new Flickr(apiKey, secretKey, new REST());
-		System.out.println("search 1");
+	public ResponseEntity<List<PhotoSearchResult>> getPhotos(String searchData) {
 		SearchParameters searchParameters = new SearchParameters();
-		searchParameters.setBBox("-180", "-90", "180", "90");
-		searchParameters.setMedia("photos");
-		String [] tags = {"dog","cat"};
-		searchParameters.setTags(tags);
-		System.out.println("search 2");
-		PhotoList<Photo> list = flickr.getPhotosInterface().search(searchParameters, 10, 0);
-		System.out.println("search 3");
-
-//		System.out.println("Image List");
-//		for (int i = 0; i < list.size(); i++) {
-//			Photo photo = list.get(i);
-//			System.out.println("Image: " + i
-//					+ "\nTitle: " + photo.getTitle()
-//					+ "\nMedia: " + photo.getOriginalFormat()
-//					+ "\nPublic: " + photo.isPublicFlag()
-//					+ "\nTag: " + photo.getTags()
-//					+ "\nUrl: " + photo.getUrl()
-//					+ "\n");
-//		}
-////		System.out.println();
+		searchParameters.setText(searchData);
+		String apiKey = "f045b28fca18e8c6c82eb9832f007238";
+		String sharedSecret = "6f97aff6a5034de1";
+		Flickr f = new Flickr(apiKey, sharedSecret, new REST());
+		List<PhotoSearchResult> psr = new ArrayList<PhotoSearchResult>();
+		PhotoList<Photo> list = null;
+		try {
+			list = f.getPhotosInterface().search(searchParameters, 10, 1);
+		} catch (FlickrException e) {
+			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.BAD_REQUEST);
+		}
 		
-		return list;
+		if (CollectionUtils.isEmpty(list)) {
+			return new ResponseEntity<List<PhotoSearchResult>>(HttpStatus.NO_CONTENT);
+		}
+		
+		for (Photo photo : list) {
+			PhotoSearchResult p = new PhotoSearchResult();
+			p.setDescription(photo.getDescription());
+			p.setTitle(photo.getTitle());
+			p.setSmallUrl(photo.getSmallUrl());
+			p.setLargeUrl(photo.getLargeUrl());
+			p.setUrl(photo.getUrl());
+			psr.add(p);
+		}
+		
+//		saveSearchHistoryList(session, search);
+		
+		return new ResponseEntity<List<PhotoSearchResult>>(psr, HttpStatus.OK);
 	}
 }

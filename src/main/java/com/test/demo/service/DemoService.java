@@ -3,12 +3,14 @@ package com.test.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
 import com.test.demo.entity.Demo;
+import com.test.demo.entity.PhotoSearchResult;
 import com.test.demo.repository.DemoRepository;
 
 @Service
@@ -34,8 +36,9 @@ public class DemoService {
 		return demoRepository.delete(id);
 	}
 
-	public PhotoList<Photo> search() throws FlickrException {
-		return demoRepository.search();
+	public ResponseEntity<List<PhotoSearchResult>> getPhotos(String searchData) {
+		// TODO Auto-generated method stub
+		return demoRepository.getPhotos(searchData);
 	}
 
 }

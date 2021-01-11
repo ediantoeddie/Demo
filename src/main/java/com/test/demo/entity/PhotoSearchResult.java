@@ -8,6 +8,7 @@ public class PhotoSearchResult implements Serializable  {
 	private String description;
 	private String smallUrl;
 	private String largeUrl;
+	private String url;
 
 	public String getTitle() {
 		return title;
@@ -40,4 +41,13 @@ public class PhotoSearchResult implements Serializable  {
 	public void setLargeUrl(String largeUrl) {
 		this.largeUrl = largeUrl;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 }
