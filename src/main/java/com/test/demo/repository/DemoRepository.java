@@ -3,6 +3,7 @@ package com.test.demo.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -78,9 +79,7 @@ public class DemoRepository {
 			p.setUrl(photo.getUrl());
 			psr.add(p);
 		}
-		
-//		saveSearchHistoryList(session, search);
-		
+			
 		return new ResponseEntity<List<PhotoSearchResult>>(psr, HttpStatus.OK);
 	}
 }

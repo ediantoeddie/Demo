@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import com.flickr4java.flickr.photos.SearchParameters;
 import com.test.demo.entity.Demo;
 import com.test.demo.service.DemoService;
 import com.test.demo.entity.PhotoSearchResult;
+import com.test.demo.repository.DemoRepository;
 
 @RestController
 @RequestMapping("/demo")
@@ -47,7 +49,8 @@ public class DemoController {
 		return demoService.getAll();
 	}
 	
-	@PostMapping("/add")
+//	@PostMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST, headers = "Accept=application/json")
 	public String add(@RequestBody Demo demo){
 		return demoService.add(demo);
 	}
